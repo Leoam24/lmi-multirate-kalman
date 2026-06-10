@@ -1,4 +1,64 @@
-clear; close; clc;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Recursive Multirate Kalman Filter Implementation (Milestone 2)
+%
+% Author: Léo AHMED MUSHTAQ
+% Supervised by: Hiroshi OKAJIMA
+% Created with assistance from Claude (Anthropic)
+% Date: June 2026
+%
+% Description:
+%   This code implements a time-varying, recursive multirate Kalman filter 
+%   for automotive navigation systems. It is designed to evaluate the transient 
+%   and periodic steady-state convergence (Milestone 2) prior to LMI synthesis.
+%   The system fuses GPS measurements (1 Hz) with wheel speed sensor data (10 Hz)
+%   to estimate vehicle position, velocity, and acceleration.
+% 
+%   Deterministic gain property: K(k) depends only on A, C, Q, R, S_k
+%   and P(0), NOT on the realized noise. The gain trajectory is therefore
+%   identical across all noise realizations — no state simulation required.
+%
+%   Key Features:
+%   - Dynamic sensor dimension handling (active/inactive states)
+%   - Avoids numerical singularities by extracting active sub-matrices
+%   - Recursive tracking of Predictor (L) and Filter (K) gains
+%   - Visual verification of error covariance P(k) periodicity
+%
+% System Configuration:
+%   - State: [position; velocity; acceleration]
+%   - Measurements: GPS position (1 Hz, active every N=10 steps) + Wheel speed (10 Hz, active every step)
+%   - Period: N = 10, Sampling time: dt = 0.1s
+%
+% Recursive Formulation:
+%   Prediction:   P_pred = A * P * A' + Q
+%   Active block: C_act = C(active_idx,:),  R_act = R(active_idx,active_idx)
+%   Filter gain:  K_act = P_pred * C_act' / (C_act * P_pred * C_act' + R_act)
+%                 K = zeros(n,m);  K(:,active_idx) = K_act   (full n×m matrix)
+%   Correction:   P = (I - K*C) * P_pred
+%   Predictor:    L = A * K   (for comparison with LMI gains in Milestone 3)
+%
+% Reference:
+%   H. Okajima, "LMI Optimization Based Multirate Steady-State Kalman Filter 
+%   Design," IEEE Access, 2025. 
+%
+% Usage:
+%   Run this script directly to perform:
+%   1. System and measurement pattern definition
+%   2. Recursive Kalman filter execution over T steps
+%   3. Gain component extraction over time
+%   4. Visual evaluation of convergence and periodicity
+%
+% Output:
+%   - Console: P(k) trace values verifying N=10 periodicity
+%   - Figures: Kalman filter/predictor gains, Covariance matrix convergence
+%
+% Required MATLAB Toolboxes:
+%   - Base MATLAB
+%
+% Repository:
+%   https://github.com/Leoam24/lmi-multirate-kalman
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear; close all; clc;
 %% System Definition
 N = 10; p = 1; dt = 0.1; T = 200;
 
@@ -43,6 +103,8 @@ for k = 1:T
 end
 
 %% Gain display 
+figure('Name','Milestone 2: Gain convergence',...
+      'Position',[150 150 1000 700]);
 
 subplot(2,2,1);
 plot(1:T, K_gps_pos, 'b-', 'LineWidth', 1.5);
