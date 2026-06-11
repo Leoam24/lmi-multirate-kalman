@@ -1,6 +1,6 @@
 # LMI-Based Multirate Kalman Filter Synthesis
 
-> Research conducted at Kumamoto University (Japan) on discrete-time systems. Focus on LMI-based multirate Kalman filter synthesis and recursive gain comparison.
+> As part of the SRI program, I conducted research on discrete-time systems during my second-year internship at Upssitech, in collaboration with Kumamoto University. My work focused on the synthesis of LMI-based multirate Kalman filters and the comparison of their recursive gains.
 
 ## About This Project
 
