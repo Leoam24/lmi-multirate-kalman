@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Recursive Multirate Kalman Filter Implementation (Milestone 2)
+% Milestone 2 - Recursive Multirate Kalman Filter Implementation
 %
 % Author: Léo AHMED MUSHTAQ
 % Supervised by: Hiroshi OKAJIMA
@@ -58,7 +58,8 @@
 %   https://github.com/Leoam24/lmi-multirate-kalman
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear; close all; clc;
+% clear;
+close all; clc;
 %% System Definition
 N = 10; p = 1; dt = 0.1; T = 200;
 
