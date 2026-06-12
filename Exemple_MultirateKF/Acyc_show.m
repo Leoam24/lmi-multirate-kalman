@@ -17,5 +17,5 @@ hold off;
 % Ajustement des axes pour la propreté visuelle
 set(gca, 'XTick', n/2:n:n_cyc, 'XTickLabel', 1:N);
 set(gca, 'YTick', n/2:n:n_cyc, 'YTickLabel', 1:N);
-xlabel('Index du bloc colonne (k)');
-ylabel('Index du bloc ligne (k+1)');
+xlabel('Column block index (k)');
+ylabel('Line block index (k+1)');
