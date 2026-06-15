@@ -20,10 +20,10 @@ clear; close all; clc;
 
 %% Loading variables from the LMI method
 set(0, 'DefaultFigureVisible', 'off'); % deactivate graphics from other scripts
-addpath('C:\Users\Ahmed Mushtaq Léo\Desktop\Code\lmi-multirate-kalman\Exemple_MultirateKF');
+addpath('C:\Users\Ahmed Mushtaq Léo\Desktop\Code\lmi-multirate-kalman\Example_MultirateKF');
 silence1 = evalc('MultirateKF_01');
 clearvars('-except', 'L', 'copt', 'eig_cl', 'P_ss', 'X_opt');
-rmpath('C:\Users\Ahmed Mushtaq Léo\Desktop\Code\lmi-multirate-kalman\Exemple_MultirateKF');
+rmpath('C:\Users\Ahmed Mushtaq Léo\Desktop\Code\lmi-multirate-kalman\Example_MultirateKF');
 
 %% Loading variables from the Recursive Kalman Filter method
 silence2 = evalc('main_kalman_recursive');
