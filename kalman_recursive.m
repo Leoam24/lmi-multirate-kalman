@@ -19,6 +19,7 @@ function [K_history, L_history, P_history] = kalman_recursive(A, C, Q, R, S_mat,
         idx = mod(k-1, N) + 1;
         S_k = S_mat{idx};
         
+        % We are looking for which sensor lines are active (the 1s on the diagonal of S_k)
         active_idx = find(diag(S_k) == 1); 
         
         %--Extraction du "bloc non-singulier"--
@@ -26,6 +27,7 @@ function [K_history, L_history, P_history] = kalman_recursive(A, C, Q, R, S_mat,
         R_act = R(active_idx, active_idx);
         
         %--Kalman Gain--
+        % The gain is calculated only for the sensors that are turned on
         K_act = P_pred * C_act' / (C_act * P_pred * C_act' + R_act);
         
         K = zeros(n, m);
