@@ -19,7 +19,7 @@ The core objective of this repository is to compare the offline periodic steady-
 * **Milestone 3 — Convergence Comparison:** Convert both the LMI-based gains and recursive gains to the same predictor form to compare them. The goal is to check if the recursive gain becomes periodic after the transient phase and whether it converges to the LMI optimal periodic gains, analyzing any residual gaps due to the LMI upper-bound minimization.
 
 ## Repository Structure
-
+* `recursive_lmi_comparison.m`: Script dedicated to the quantitative comparison between the offline periodic gains (computed via LMI) and the steady-state recursive gains, including conversion to predictor form and evaluation of the Frobenius norm gap ($\Delta_k$).
 * `main_kalman_recursive.m`: Main execution script configuring the multirate system (GPS/Wheel speed) and evaluating the recursive Kalman filter.
 * `kalman_recursive.m`: Implementation of the standard time-varying Kalman recursion for multirate active sensors.
 * `Acyc_show.m` : Structure observation of the matrix A_cyc in `MultirateKF_01.m` code.
