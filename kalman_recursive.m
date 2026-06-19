@@ -4,11 +4,13 @@ function [K_history, L_history, P_history] = kalman_recursive(A, C, Q, R, S_mat,
     m = size(C, 1);
     N = length(S_mat);
     
+    K_history = cell(T, 1);   
+    L_history = cell(T, 1);   
+    
     P = P0;
-    K_history = cell(T, 1); % saves the gain K for each k
-    L_history = cell(T, 1);   % predictor gain L = A*K
-    P_history = zeros(n, n, T);
-
+    P_history = zeros(n, n, T+1);
+    P_history(:,:,1) = P;
+    
     for k = 1:T
         %--prediction--
         P_pred = A * P * A' + Q;
@@ -28,17 +30,15 @@ function [K_history, L_history, P_history] = kalman_recursive(A, C, Q, R, S_mat,
         % The gain is calculated only for the sensors that are turned on
         K_act = P_pred * C_act' / (C_act * P_pred * C_act' + R_act);
         
-        % reconstruction of the true matrix K (zero where there is no sensor)
         K = zeros(n, m);
         K(:, active_idx) = K_act;
         
         %--Correction phase--
-        % Update of the covariance with the information provided by the active sensors
-        P = (eye(n) - K * C) * P_pred;
+        P = (eye(n) - K_act * C_act) * P_pred;
+        
         %--Save--
         K_history{k} = K;
         L_history{k} = A * K;
-        P_history(:,:,k) = P;
-
+        P_history(:,:,k+1) = P; 
     end
 end
