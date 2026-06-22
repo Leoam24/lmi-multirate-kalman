@@ -59,18 +59,17 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [K_history, L_history, P_history, trace_P] = func_kalman_recursive(input_N, input_dt, input_T, input_Q, input_R, input_P0,label,param_family,multiplier)
+function [K_history, L_history, P_history, trace_P] = func_kalman_recursive(input_N, input_dt, input_T, input_Q, input_R, input_P0,label,multiplier)
 
 %% System Definition
-N = input_N; dt = input_dt; T = input_T;
-% p = 1;
+N = input_N; p = 1; dt = input_dt; T = input_T;
 
 % State-space model: x = [position; velocity; acceleration]
 A = [1  dt  0.5*dt^2;
      0  1   dt;
      0  0   0.8];
 
-% B = [0; 0; 1];
+B = [0; 0; 1];
 
 % Output: position and velocity
 C = [1 0 0;   % GPS position
@@ -108,38 +107,34 @@ for k = 1:T
 end
 
 %% Gain display 
-figure('Name', sprintf('Gain convergence — %s (x%s)', label, num2str(multiplier)), ...
+figure('Name',['Gain convergence for ', label, 'and a multiplier of ', multiplier],...
       'Position',[150 150 1000 700]);
 
 subplot(2,2,1);
-plot(1:T, K_gps_pos, 'b-', 'LineWidth', 1.5, 'DisplayName', 'K(1,1)');
+plot(1:T, K_gps_pos, 'b-', 'LineWidth', 1.5);
 title('K(1,1) - Filter : GPS --> Position');
 ylabel('Gain value'); grid on;
 for i = 1:N:T, xline(i, 'k:', 'HandleVisibility','off'); end
-legend('Location', 'best');
 
 subplot(2,2,2);
-plot(1:T, K_wheel_vel, 'r-', 'LineWidth', 1.5, 'DisplayName', 'K(2,2)');
+plot(1:T, K_wheel_vel, 'r-', 'LineWidth', 1.5);
 title('K(2,2) - Filter : Wheel --> Velocity');
 ylabel('Gain value'); grid on;
 for i = 1:N:T, xline(i, 'k:', 'HandleVisibility','off'); end
-legend('Location', 'best');
 
 subplot(2,2,3);
-plot(1:T, L_gps_pos, 'b-', 'LineWidth', 1.5, 'DisplayName', 'L(1,1)');
+plot(1:T, L_gps_pos, 'b-', 'LineWidth', 1.5);
 title('L(1,1) = A·K(1,1) - Predictor : GPS --> Position');
 xlabel('Step k'); ylabel('Gain value'); grid on;
 for i = 1:N:T, xline(i, 'k:', 'HandleVisibility','off'); end
-legend('Location', 'best');
 
 subplot(2,2,4);
-plot(1:T, L_wheel_vel, 'r-', 'LineWidth', 1.5, 'DisplayName', 'L(2,2)');
+plot(1:T, L_wheel_vel, 'r-', 'LineWidth', 1.5);
 title('L(2,2) = A·K(2,2) - Predictor : Wheel --> Velocity');
 xlabel('Step k'); ylabel('Gain value'); grid on;
 for i = 1:N:T, xline(i, 'k:', 'HandleVisibility','off'); end
-legend('Location', 'best');
 
-sgtitle(sprintf('Recursive Kalman filter convergence — %s (x%s)', label, num2str(multiplier)), 'FontSize', 13, 'FontWeight', 'bold');
+sgtitle(['Recursive Kalman filter convergence with ', label, 'and a multiplier of ', multiplier], 'FontSize', 13);
 
 
 %% Error Covariance Convergence (P_k)
@@ -149,34 +144,33 @@ for k = 1:T
 end
 
 %% Error Covariance Convergence display
-figure('Name', sprintf('Covariance Matrix Convergence — %s (x%s)', label, num2str(multiplier)), 'Position', [200 200 800 450]);
-plot(1:T, trace_P, 'b-s', 'LineWidth', 2, 'MarkerFaceColor', 'b', 'MarkerSize', 4, 'DisplayName', 'trace(P(k))');
+figure('Name', ['Covariance Matrix Convergence with ', label, 'and a multiplier of ', multiplier], 'Position', [200 200 800 450]);
+plot(1:T, trace_P, 'b-s', 'LineWidth', 2, 'MarkerFaceColor', 'b', 'MarkerSize', 4);
 
-title(sprintf('Evolution of trace(P(k)) Over Time — %s (x%s)', label, num2str(multiplier)), 'FontSize', 12, 'FontWeight', 'bold');
+title(['Evolution of trace(P(k)) Over Time with ', label, 'and a multiplier of ', multiplier], 'FontSize', 12);
 xlabel('Time Step k');
 ylabel('trace(P(k)) (Total Estimation Uncertainty)');
 hold on;
 
 % Threshold marking the end of the initial transient phase (e.g., k = 20)
-xline(20, 'r--', 'Transient End', 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5, 'HandleVisibility', 'off');
+xline(20, 'r--', 'Transient End', 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5);
 
 % Grid indicators for each full cycle period (N = 10 steps)
 for i = 1:N:T
     xline(i, 'k:', 'HandleVisibility', 'off');
 end
-legend('Location', 'best');
 
 %% Periodicity verification
 last_multiples = (floor(T/N)-2 : floor(T/N)) * N;
 last_multiples = last_multiples(last_multiples >= 1 & last_multiples <= T);
 
-fprintf('\n========================================================\n');
-fprintf('  P(k) Periodicity Verification — %s (N=%d, x%s)\n', label, N, num2str(multiplier));
-fprintf('========================================================\n');
+fprintf('\n========================================\n');
+fprintf('   P(k) Periodicity Verification (N=%d)\n', N);
+fprintf('========================================\n');
 for idx = last_multiples
-    fprintf('  trace_P(%-4d) = %.6f\n', idx, trace_P(idx));
+    fprintf('trace_P(%d) = %.6f\n', idx, trace_P(idx));
 end
-fprintf('========================================================\n');
+fprintf('========================================\n');
 
 
 end
