@@ -14,7 +14,7 @@
 clear; close all; clc;
 
 %% Calling differents parameters
-[N_test,dt_test,T_test,Q_test,R_test,P0_test] = bloc_tests(2); % enter a number between 1 and 10
+[N_test,dt_test,T_test,Q_test,R_test,P0_test] = bloc_tests(1); % enter a number between 1 and 10
      
 %% Calling func_kalman_recursive.m
 fprintf('=== Test of run_kalman_milestone2 (nominal case) ===\n');

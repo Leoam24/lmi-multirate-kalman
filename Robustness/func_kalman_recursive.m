@@ -92,9 +92,9 @@ end
 
 %% run Recursive Filter
 %% Loading variables from the LMI method
-addpath('C:\Users\Ahmed Mushtaq Léo\Desktop\Code\lmi-multirate-kalman');
+addpath('../');
 [K_history, L_history, P_history] = kalman_recursive(A, C, Q, R, S_mat, P0, T);
-rmpath('C:\Users\Ahmed Mushtaq Léo\Desktop\Code\lmi-multirate-kalman');
+rmpath('../');
 %% components extraction
 K_gps_pos  = zeros(T, 1);   % K(1,1) : gain Filter GPS --> position
 K_wheel_vel = zeros(T, 1);  % K(2,2) : gain Filter Wheel --> Velocity
