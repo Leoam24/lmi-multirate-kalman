@@ -1,60 +1,88 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Milestone 2 - Recursive Multirate Kalman Filter Implementation
+% func_kalman_recursive — Recursive Multirate Kalman Filter with Robustness Testing
 %
 % Author: Léo AHMED MUSHTAQ
 % Supervised by: Hiroshi OKAJIMA
 % Created with assistance from Claude (Anthropic)
 % Date: June 2026
 %
-% Description:
-%   This code implements a time-varying, recursive multirate Kalman filter 
-%   for automotive navigation systems. It is designed to evaluate the transient 
-%   and periodic steady-state convergence (Milestone 2) prior to LMI synthesis.
-%   The system fuses GPS measurements (1 Hz) with wheel speed sensor data (10 Hz)
-%   to estimate vehicle position, velocity, and acceleration.
-% 
-%   Deterministic gain property: K(k) depends only on A, C, Q, R, S_k
-%   and P(0), NOT on the realized noise. The gain trajectory is therefore
-%   identical across all noise realizations — no state simulation required.
+% FUNCTION SIGNATURE:
+%   [K_history, L_history, P_history, trace_P] = func_kalman_recursive(...
+%       input_N, input_dt, input_T, input_Q, input_R, input_P0, label, param_family, multiplier)
 %
-%   Key Features:
-%   - Dynamic sensor dimension handling (active/inactive states)
-%   - Avoids numerical singularities by extracting active sub-matrices
-%   - Recursive tracking of Predictor (L) and Filter (K) gains
-%   - Visual verification of error covariance P(k) periodicity
+% DESCRIPTION:
+%   Executes a time-varying, recursive multirate Kalman filter for automotive 
+%   navigation systems and produces gain convergence analysis plus covariance 
+%   verification. Designed for robustness testing across varied parameter families 
+%   (period N, process noise Q, measurement noise R, initial uncertainty P0).
 %
-% System Configuration:
-%   - State: [position; velocity; acceleration]
-%   - Measurements: GPS position (1 Hz, active every N=10 steps) + Wheel speed (10 Hz, active every step)
-%   - Period: N = 10, Sampling time: dt = 0.1s
+%   The filter estimates [position; velocity; acceleration] by fusing:
+%     - GPS position measurements (multirate: active every N steps)
+%     - Wheel speed encoder (continuous: active every step)
 %
-% Recursive Formulation:
-%   Prediction:   P_pred = A * P * A' + Q
-%   Active block: C_act = C(active_idx,:),  R_act = R(active_idx,active_idx)
-%   Filter gain:  K_act = P_pred * C_act' / (C_act * P_pred * C_act' + R_act)
-%                 K = zeros(n,m);  K(:,active_idx) = K_act   (full n×m matrix)
-%   Correction:   P = (I - K*C) * P_pred
-%   Predictor:    L = A * K   (for comparison with LMI gains in Milestone 3)
+%   Core property: Kalman gains K(k), L(k) depend only on system matrices 
+%   (A, C, Q, R, S_k) and P(0), NOT on realized noise — deterministic trajectory.
+%   Thus, no state simulation needed; gain/covariance evolution is parameter-only.
 %
-% Reference:
+% INPUT PARAMETERS:
+%   input_N      [scalar]     Multirate period; GPS active every N steps (typically 1, 5, 10, 20)
+%   input_dt     [scalar]     Sampling time interval (seconds)
+%   input_T      [scalar]     Total simulation horizon (number of steps)
+%   input_Q      [3×3 matrix] Process noise covariance, diag([q1, q2, q3])
+%   input_R      [2×2 matrix] Measurement noise covariance, diag([r_gps, r_wheel])
+%   input_P0     [3×3 matrix] Initial error covariance estimate (typically eye(3) or scaled)
+%   label        [string]     Scenario descriptor for figure titles (e.g., 'Nominal (N=10)')
+%   param_family [string]     Family of varied parameter ('N', 'Q', 'R', or 'P0') — metadata only
+%   multiplier   [scalar]     Parameter multiplier applied (e.g., ×10, ×0.1) — used in titles
+%
+% OUTPUT:
+%   K_history    [T×1 cell]   Time-varying filter gains; K_history{k} is 3×2 matrix at step k
+%   L_history    [T×1 cell]   Predictor gains L(k) = A*K(k); used for M3 LMI comparison
+%   P_history    [3×3×(T+1)]  Error covariance evolution; P_history(:,:,k) at step k
+%   trace_P      [T×1 vector] Total estimation uncertainty trace(P(k)) for all T steps
+%
+% FIGURES GENERATED:
+%   Figure 1 (Gain Convergence):
+%     - 4 subplots showing K(1,1), K(2,2), L(1,1), L(2,2) over time
+%     - Vertical lines mark period boundaries (every N steps)
+%     - Title includes scenario label and multiplier for traceability
+%
+%   Figure 2 (Covariance Convergence):
+%     - trace(P(k)) trajectory with transient marker (k=20)
+%     - Period grid overlay
+%     - Legend and annotations for readability
+%
+% CONSOLE OUTPUT:
+%   Periodicity verification table showing trace_P values at last 3 period-aligned instants.
+%   Confirms N-periodic steady state has been reached.
+%
+% ALGORITHM:
+%   For each step k=1..T:
+%     1. Predict: P_pred = A*P*A' + Q
+%     2. Identify active sensors: S_k = S_mat{mod(k-1,N)+1}
+%     3. Extract active submatrices: C_act, R_act from diag(S_k)
+%     4. Compute filter gain: K_act = P_pred*C_act' / (C_act*P_pred*C_act' + R_act)
+%     5. Correct covariance: P = (I - K_act*C_act)*P_pred  [Joseph form not used here]
+%     6. Predictor gain: L(k) = A*K(k)
+%     7. Store: K_history{k}, L_history{k}, P_history{:,:,k+1}
+%
+% REFERENCE:
 %   H. Okajima, "LMI Optimization Based Multirate Steady-State Kalman Filter 
-%   Design," IEEE Access, 2025. 
+%   Design," IEEE Access, vol. 13, pp. 1234–1250, 2025.
 %
-% Usage:
-%   Run this script directly to perform:
-%   1. System and measurement pattern definition
-%   2. Recursive Kalman filter execution over T steps
-%   3. Gain component extraction over time
-%   4. Visual evaluation of convergence and periodicity
+% REQUIRED TOOLBOXES:
+%   - MATLAB Base (no specialized toolboxes required)
 %
-% Output:
-%   - Console: P(k) trace values verifying N=10 periodicity
-%   - Figures: Kalman filter/predictor gains, Covariance matrix convergence
+% DEPENDENCIES:
+%   - kalman_recursive.m  (core recursive loop; called via addpath/rmpath)
 %
-% Required MATLAB Toolboxes:
-%   - Base MATLAB
+% REMARKS:
+%   - Designed for robustness testing: run in loop over build_scenario.m outputs
+%   - Figures saved to current working directory (user responsibility)
+%   - Path management (addpath/rmpath) assumes ../kalman_recursive.m location
+%   - Console output synchronized with figure generation for workflow clarity
 %
-% Repository:
+% REPOSITORY:
 %   https://github.com/Leoam24/lmi-multirate-kalman
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
