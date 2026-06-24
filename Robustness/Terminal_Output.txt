@@ -1,0 +1,299 @@
+========================================================
+  TEST 1 / 10  —  Scenario: Nominal (N=10)
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — Nominal (N=10) (N=10, x1)
+========================================================
+  trace_P(180 ) = 1.649560
+  trace_P(190 ) = 1.649559
+  trace_P(200 ) = 1.649558
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.5029    0.0413
+    0.0041    0.9170
+   -0.0013    0.0662
+
+  trace_P(end) = 1.649558 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 1 Complete ---
+
+========================================================
+  TEST 2 / 10  —  Scenario: N=1 (GPS every step)
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — N=1 (GPS every step) (N=1, x1)
+========================================================
+  trace_P(198 ) = 1.377942
+  trace_P(199 ) = 1.377942
+  trace_P(200 ) = 1.377942
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.5029    0.0413
+    0.0041    0.9170
+   -0.0013    0.0662
+
+  trace_P(end) = 1.377942 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 2 Complete ---
+
+========================================================
+  TEST 3 / 10  —  Scenario: N=5
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — N=5 (N=5, x1)
+========================================================
+  trace_P(190 ) = 1.521023
+  trace_P(195 ) = 1.521023
+  trace_P(200 ) = 1.521023
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.5029    0.0413
+    0.0041    0.9170
+   -0.0013    0.0662
+
+  trace_P(end) = 1.521023 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 3 Complete ---
+
+========================================================
+  TEST 4 / 10  —  Scenario: N=20
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — N=20 (N=20, x1)
+========================================================
+  trace_P(160 ) = 1.851967
+  trace_P(180 ) = 1.851868
+  trace_P(200 ) = 1.851829
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.5029    0.0413
+    0.0041    0.9170
+   -0.0013    0.0662
+
+  trace_P(end) = 1.851829 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 4 Complete ---
+
+========================================================
+  TEST 5 / 10  —  Scenario: Q x10 (high process noise)
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — Q x10 (high process noise) (N=10, x10)
+========================================================
+  trace_P(180 ) = 13.311547
+  trace_P(190 ) = 13.311547
+  trace_P(200 ) = 13.311547
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.5250    0.0226
+    0.0023    0.9525
+    0.0001    0.0379
+
+  trace_P(end) = 13.311547 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 5 Complete ---
+
+========================================================
+  TEST 6 / 10  —  Scenario: Q x0.1 (low process noise)
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — Q x0.1 (low process noise) (N=10, x0.1)
+========================================================
+  trace_P(180 ) = 0.309365
+  trace_P(190 ) = 0.309043
+  trace_P(200 ) = 0.308802
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.5005    0.0448
+    0.0045    0.9103
+   -0.0016    0.0716
+
+  trace_P(end) = 0.308802 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 6 Complete ---
+
+========================================================
+  TEST 7 / 10  —  Scenario: R x10 (unreliable sensors)
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — R x10 (unreliable sensors) (N=10, x10)
+========================================================
+  trace_P(180 ) = 3.076969
+  trace_P(190 ) = 3.077886
+  trace_P(200 ) = 3.078577
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.0922    0.0432
+    0.0043    0.5259
+    0.0000    0.0379
+
+  trace_P(end) = 3.078577 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 7 Complete ---
+
+========================================================
+  TEST 8 / 10  —  Scenario: R x0.1 (reliable sensors)
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — R x0.1 (reliable sensors) (N=10, x0.1)
+========================================================
+  trace_P(180 ) = 1.331155
+  trace_P(190 ) = 1.331155
+  trace_P(200 ) = 1.331155
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.9100    0.0081
+    0.0008    0.9910
+   -0.0029    0.0717
+
+  trace_P(end) = 1.331155 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 8 Complete ---
+
+========================================================
+  TEST 9 / 10  —  Scenario: P0 x10 (high initial uncertainty)
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — P0 x10 (high initial uncertainty) (N=10, x10)
+========================================================
+  trace_P(180 ) = 1.649562
+  trace_P(190 ) = 1.649560
+  trace_P(200 ) = 1.649559
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.9092    0.0089
+    0.0009    0.9902
+   -0.0035    0.0780
+
+  trace_P(end) = 1.649559 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 9 Complete ---
+
+========================================================
+  TEST 10 / 10  —  Scenario: P0 x0.1 (low initial uncertainty)
+========================================================
+
+========================================================
+  P(k) Periodicity Verification — P0 x0.1 (low initial uncertainty) (N=10, x0.1)
+========================================================
+  trace_P(180 ) = 1.649555
+  trace_P(190 ) = 1.649556
+  trace_P(200 ) = 1.649557
+========================================================
+
+--- Dimension Verification ---
+  length(K_history) = 200  (expected : 200)
+  length(L_history) = 200  (expected : 200)
+  size(P_history)   = [3    3  201]  (expected : [3 3 201])
+  length(trace_P)   = 200  (expected : 200)
+
+--- Numerical Consistency Check ---
+  K_history{1} :
+    0.0996    0.0301
+    0.0030    0.6677
+    0.0001    0.0266
+
+  trace_P(end) = 1.649557 (must be complete and positive)
+
+  [OK]      trace_P is positive and finite throughout the simulation.
+
+  --- Test 10 Complete ---
