@@ -87,7 +87,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [K_history, L_history, P_history, trace_P] = func_kalman_recursive(input_N, input_dt, input_T, input_Q, input_R, input_P0,label,param_family,multiplier)
+function [K_history, L_history, P_history, trace_P] = func_kalman_recursive( ...
+    input_N, input_dt, input_T, input_Q, input_R, input_P0,label,param_family,multiplier)
 
 %% System Definition
 N = input_N; dt = input_dt; T = input_T;
@@ -169,6 +170,9 @@ legend('Location', 'best');
 
 sgtitle(sprintf('Recursive Kalman filter convergence — %s (x%s)', label, num2str(multiplier)), 'FontSize', 13, 'FontWeight', 'bold');
 
+fileName1 = sprintf('Convergence_%s_x%s.png', label, num2str(multiplier));
+completePath1 = fullfile('Output\Convergence', fileName1);
+exportgraphics(gcf, completePath1, 'Resolution', 300);
 
 %% Error Covariance Convergence (P_k)
 trace_P = zeros(T, 1);
@@ -193,6 +197,10 @@ for i = 1:N:T
     xline(i, 'k:', 'HandleVisibility', 'off');
 end
 legend('Location', 'best');
+
+fileName2 = sprintf('Covariance_Convergence_%s_x%s.png', label, num2str(multiplier));
+completePath2 = fullfile('Output\Covariance', fileName2);
+exportgraphics(gcf, completePath2, 'Resolution', 300);
 
 %% Periodicity verification
 last_multiples = (floor(T/N)-2 : floor(T/N)) * N;
