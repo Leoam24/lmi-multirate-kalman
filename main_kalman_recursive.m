@@ -88,7 +88,7 @@ for i = 2:N
 end
 
 %% run Recursive Filter
-[K_history, L_history, P_history] = kalman_recursive(A, C, Q, R, S_mat, P0, T);
+[K_history, L_history, P_history] = kalman_recursive(A, B, C, Q, R, S_mat, P0, T);
 
 %% components extraction
 K_gps_pos  = zeros(T, 1);   % K(1,1) : gain Filter GPS --> position
