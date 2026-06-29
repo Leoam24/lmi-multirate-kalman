@@ -40,10 +40,15 @@ function [K_history, L_history, P_history] = kalman_recursive(A, B, C, Q, R, S_m
         
         %--Correction phase--
         P = (eye(n) - K_act * C_act) * P_pred;
-        X = X_pred + K_act*(C*);
+        
+        Y = C*X_true; % a modifier
+        X = X_pred + K_act*(C*); % a completer 
+        
         %--Save--
         K_history{k} = K;
         L_history{k} = A * K;
-        P_history(:,:,k+1) = P; 
+        P_history(:,:,k+1) = P;
+        X_history(:,k+1) = X;
+   
     end
 end

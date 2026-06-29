@@ -18,7 +18,7 @@ function [K_history, L_history, P_history] = kalman_recursive(A, B, C, Q, R, S_m
     for k = 1:T
         %--prediction--
         P_pred = A * P * A' + Q;
-        X_pred = A*X_pred + B*u(k);
+        X_pred = A*X + B*u(k);
 
         %--active sensors identification--
         idx = mod(k-1, N) + 1;
@@ -40,10 +40,14 @@ function [K_history, L_history, P_history] = kalman_recursive(A, B, C, Q, R, S_m
         
         %--Correction phase--
         P = (eye(n) - K_act * C_act) * P_pred;
-        X
+        Y = C*X_true;
+        X = X_pred + K_act*(C*); % a completer 
+        
         %--Save--
         K_history{k} = K;
         L_history{k} = A * K;
-        P_history(:,:,k+1) = P; 
+        P_history(:,:,k+1) = P;
+        X_history(:,k+1) = X;
+   
     end
 end
