@@ -111,9 +111,9 @@
 clear; close all; clc;
 
 %% Calling differents parameters
-for i=1:10
+for i=1:12
     [N_test,dt_test,T_test,Q_test,R_test,P0_test,label,param_family, ...
-        multiplier] = build_scenario(i); % enter a number between 1 and 10
+        multiplier] = build_scenario(i); % enter a number between 1 and 12
          
     %% Calling func_kalman_recursive.m
     fprintf('\n========================================================\n');

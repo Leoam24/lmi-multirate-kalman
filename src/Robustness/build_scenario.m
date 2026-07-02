@@ -102,5 +102,25 @@ case 10 % Test 10 : P0 x0.1 (low initial uncertainty)
         label        = 'P0 x0.1 (low initial uncertainty)';
         param_family = 'P0';
         multiplier   = 0.1;
+    case 11 % Test 11 : high Q and R (lot of noise)
+        N_test  = 10;
+        dt_test = 0.1;
+        T_test  = 200;
+        Q_test  = diag([0.01, 0.1, 0.5]) * 10;
+        R_test  = diag([1.0, 0.1]) * 10;
+        P0_test = eye(3);
+        label        = 'R x10 & Q x10 (high noise)';
+        param_family = 'R&Q';
+        multiplier   = 10;
+    case 12 % Test 12 : low Q and R (reliable sensor and model)
+        N_test  = 10;
+        dt_test = 0.1;
+        T_test  = 200;
+        Q_test  = diag([0.01, 0.1, 0.5]) * 0.1;
+        R_test  = diag([1.0, 0.1]) * 0.1;
+        P0_test = eye(3);
+        label        = 'R x0.1 & Q x0.1 (small noise)';
+        param_family = 'R&Q';
+        multiplier   = 0.1;
 end
 end
