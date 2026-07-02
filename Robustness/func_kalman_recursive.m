@@ -189,9 +189,6 @@ xlabel('Time Step k');
 ylabel('trace(P(k)) (Total Estimation Uncertainty)');
 hold on;
 
-% Threshold marking the end of the initial transient phase (e.g., k = 20)
-xline(20, 'r--', 'Transient End', 'LabelVerticalAlignment', 'bottom', 'LineWidth', 1.5, 'HandleVisibility', 'off');
-
 % Grid indicators for each full cycle period (N = 10 steps)
 for i = 1:N:T
     xline(i, 'k:', 'HandleVisibility', 'off');
